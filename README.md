@@ -25,7 +25,7 @@ For a development build, use
     $ cargo build
 
 ## Usage
-After building, the file will be located at `{installLocation}least/target/release/least`. (Once file loading is implemented) Open a file with `$ least {filename}`. Make sure to set the file as executable, set the permissions as needed, and add the file to your path (consider copying it to a `~/bin` directory).
+After building, the executable will be located at `{installLocation}least/target/release/least`. (Once file loading is implemented) Open a text file with `$ least {filename}`. Make sure to set least as executable, set its permissions as needed, and add it to your path (consider copying it to a `~/bin` directory).
 
 ## Implemented Features
 - Controls:
