@@ -8,6 +8,25 @@ The functionality is also not intended to be a total clone of less, with the con
 
 Licensed under the MIT license, so feel free to download it, fork it, modify it, use it, love it, hate it, etc. You do you.
 
+## Installation
+### Requirements
+- git
+- A working Rust installation, including cargo
+- An ncurses library for your OS
+
+### Clone source from GitHub
+    $ git clone https://github.com/ddigeronimo/least.git
+
+### Build with cargo for personal use
+    $ cargo build --release
+
+For a development build, use
+    
+    $ cargo build
+
+## Usage
+After building, the file will be located at `{installLocation}least/target/release/least`. (Once file loading is implemented) Open a file with `$ least {filename}`. Make sure to set the file as executable, set the permissions as needed, and add the file to your path (consider copying it to a `~/bin` directory).
+
 ## Implemented Features
 - Controls:
     - q - Quit
