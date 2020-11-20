@@ -20,12 +20,6 @@ fn half_screen_down() {}
 // TODO: Implement
 fn half_screen_up() {}
 
-// TODO: Implement
-fn current_line_to_top() {}
-
-// TODO: Implement
-fn current_line_to_center() {}
-
 // Creates a secondary loop to collect and display search input
 // Takes in a pointer to the current pancurses Window
 // TODO: Convert from temporary function to actual search 

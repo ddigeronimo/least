@@ -39,8 +39,6 @@ After building, the executable will be located at `{installLocation}least/target
     - d - Down half screen
     - u - Up half screen
     - h - Help page
-    - z - Move current line to top of screen
-    - Z - Center current line
 - Command line flags:
     - -h, --help - Open directly to help page
 - Jumping
