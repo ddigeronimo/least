@@ -43,4 +43,6 @@ After building, the executable will be located at `{installLocation}least/target
     - -h, --help - Open directly to help page
 - Jumping
 - Optimized file loading
+    - V1: Load lines as needed
+    - V2: Add buffer functionality
 - Search functionality

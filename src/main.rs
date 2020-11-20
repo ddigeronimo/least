@@ -75,14 +75,6 @@ fn main() {
             Some(Input::Character('u')) => {
                 half_screen_up();
             }
-            // z - Move the current line to the top of the screen
-            Some(Input::Character('z')) => {
-                current_line_to_top();
-            }
-            // Z - Center the current line
-            Some(Input::Character('Z')) => {
-                current_line_to_center();
-            }
             // / - Will be search, for now just starts text input for testing
             Some(Input::Character('/')) => {
                 search(&window);
