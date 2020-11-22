@@ -1,17 +1,19 @@
 extern crate pancurses;
 
-use std::env;
-use std::fs;
-use std::io::{BufRead, BufReader};
+use std::{
+    env, fs,
+    io::{BufRead, BufReader},
+};
 
 use pancurses::{endwin, initscr, noecho, Input};
 
 // Uber-simple file loading
-// Opens the specified file and reads and returns each line with a BufReader 
-fn load_file(filename: &String) -> Vec<String>{
+// Opens the specified file and reads and returns each line with a BufReader
+fn load_file(filename: &String) -> Vec<String> {
     let file: fs::File = fs::File::open(filename).expect("Unable to read file");
     let reader = BufReader::new(file);
-    reader.lines()
+    reader
+        .lines()
         .map(|l| l.expect("Failed to read line in file"))
         .collect()
 }
@@ -54,7 +56,7 @@ fn search(window: &pancurses::Window) {
 // Main program loop
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let filename: String= args[1].to_owned();
+    let filename: String = args[1].to_owned();
     let lines: Vec<String> = load_file(&filename);
     for line in lines {
         println!("{:?}", line);
