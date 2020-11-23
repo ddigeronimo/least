@@ -80,7 +80,7 @@ fn main() {
                 help_page();
             }
             // j - Move down one line
-            Some(Input::Character('j')) => {
+            Some(Input::Character('j')) | Some(Input::KeyDown) => {
                 if content_bottom < content_len {
                     window.clear();
                     content_top += 1;
@@ -95,7 +95,7 @@ fn main() {
                 }
             }
             // k - Move up one line
-            Some(Input::Character('k')) => {
+            Some(Input::Character('k')) | Some(Input::KeyUp) => {
                 if content_top > 0 {
                     window.clear();
                     content_top -= 1;

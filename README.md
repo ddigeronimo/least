@@ -30,8 +30,8 @@ After building, the executable will be located at `{installLocation}least/target
 ## Implemented Features
 - Controls:
     - q - Quit
-    - j - Down one line 
-    - k - Up one line
+    - j, Down - Down one line 
+    - k, Up - Up one line
 - Basic file loading
 
 ## Future Features
