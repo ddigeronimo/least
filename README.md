@@ -6,7 +6,7 @@ Its intention is not to outperform less, either in terms of speed or features, a
 
 The functionality is also not intended to be a total clone of less, with the controls being geared toward my personal preferences. I'm also making a point of not looking at the less source code while I build this - it isn't a direct translation of less to Rust, but a reinterpretation that happens to be written in a different language. 
 
-Licensed under the MIT license, so feel free to download it, fork it, modify it, use it, love it, hate it, etc. You do you.
+least is licensed under the MIT license, so feel free to download it, fork it, modify it, use it, love it, hate it, etc. You do you.
 
 ## Installation
 ### Requirements
@@ -25,17 +25,17 @@ For a development build, use
     $ cargo build
 
 ## Usage
-After building, the executable will be located at `{installLocation}least/target/release/least`. (Once file loading is implemented) Open a text file with `$ least {filename}`. Make sure to set least as executable, set its permissions as needed, and add it to your path (consider copying it to a `~/bin` directory).
+After building, the executable will be located at `{installLocation}least/target/release/least`. Open a text file with `$ least {filename}`. Make sure to set least as executable, set its permissions as needed, and add it to your path (consider copying it to a `~/bin` directory).
 
 ## Implemented Features
 - Controls:
     - q - Quit
-
-## Future Features
-- Basic file loading
-- More controls:
     - j - Down one line 
     - k - Up one line
+- Basic file loading
+
+## Future Features
+- More controls:
     - d - Down half screen
     - u - Up half screen
     - h - Help page
@@ -46,3 +46,7 @@ After building, the executable will be located at `{installLocation}least/target
     - V1: Load lines as needed
     - V2: Add buffer functionality
 - Search functionality
+- Number prefixing for movement commands
+
+## Known Bugs
+- When moving down, the portion of the outgoing top line that extends past the end of the new top line will sometimes be added to the end of the new one.
