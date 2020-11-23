@@ -121,13 +121,8 @@ fn main() {
             Some(Input::Character('/')) => {
                 search(&window);
             }
-            Some(Input::Character(_c)) => {
-                // window.addch(c);
-                window.addch('x');
-            }
-            Some(input) => {
-                window.addstr(&format!("{:?}", input));
-            }
+            // Any other keys - do nothing
+            Some(_input) => (),
             None => (),
         }
     }
