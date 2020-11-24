@@ -2,7 +2,8 @@ extern crate pancurses;
 
 use std::{
     cmp::{max, min},
-    env, fs,
+    env,
+    fs::File,
     io::{BufRead, BufReader},
 };
 
@@ -57,14 +58,14 @@ fn main() {
     let window: pancurses::Window = initscr();
     window.keypad(true);
     noecho();
-    
+
     let screen_height: i32 = window.get_max_y();
     let screen_width: i32 = window.get_max_x();
     let mut content_top: i32 = 0;
     let content_len = lines.len() as i32;
     let mut content_bottom: i32 = min(screen_height - 1, content_len); // Make sure to reserve one line for program text
     let mut write_pos: i32;
-    
+
     for i in 0..content_bottom {
         window.printw(&lines[i as usize]);
         window.mv(i + 1, 0);
