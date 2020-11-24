@@ -10,9 +10,9 @@ use std::{
 use pancurses::{endwin, initscr, noecho, Input};
 
 // Uber-simple file loading
-// Opens the specified file and reads and returns each line with a BufReader
+// Opens the specified file, reads with a BufReader, and returns a Vec of Strings
 fn load_file(filename: &String) -> Vec<String> {
-    let file: fs::File = fs::File::open(filename).expect("Unable to read file");
+    let file: File = File::open(filename).expect("Unable to read file");
     let reader = BufReader::new(file);
     reader
         .lines()
