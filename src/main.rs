@@ -92,8 +92,8 @@ fn main() {
                     write_pos = 0;
                     for i in content_top..content_bottom {
                         &window.printw(&lines[i as usize]);
-                        window.mv(write_pos, 0);
                         write_pos += 1;
+                        window.mv(write_pos, 0);
                     }
                     &window.refresh();
                 }
@@ -107,8 +107,8 @@ fn main() {
                     write_pos = 0;
                     for i in content_top..content_bottom {
                         &window.printw(&lines[i as usize]);
-                        window.mv(write_pos, 0);
                         write_pos += 1;
+                        window.mv(write_pos, 0);
                     }
                     &window.refresh();
                 }

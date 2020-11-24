@@ -49,5 +49,4 @@ After building, the executable will be located at `{installLocation}least/target
 - Number prefixing for movement commands
 
 ## Known Bugs
-- When moving down or up, portions of the top and 2nd liens may be fused together.
-    - Characters from the longer line join after the end of the shorter.
+*All clear right now!*
