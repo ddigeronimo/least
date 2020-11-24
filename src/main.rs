@@ -113,12 +113,12 @@ fn main() {
                     &window.refresh();
                 }
             }
-            // d - Move down half screen
-            Some(Input::Character('d')) => {
+            // d, PgDn - Move down half screen
+            Some(Input::Character('d')) | Some(Input::KeyNPage) => {
                 half_screen_down();
             }
-            // u - Move up half screen
-            Some(Input::Character('u')) => {
+            // u, PgUp - Move up half screen
+            Some(Input::Character('u')) | Some(Input::KeyPPage) => {
                 half_screen_up();
             }
             // / - Will be search, for now just starts text input for testing
