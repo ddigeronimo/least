@@ -1,7 +1,7 @@
 extern crate pancurses;
 
 use std::{
-    cmp::{max, min},
+    cmp::min,
     env,
     fs::File,
     io::{BufRead, BufReader},
