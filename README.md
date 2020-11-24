@@ -36,8 +36,8 @@ After building, the executable will be located at `{installLocation}least/target
 
 ## Future Features
 - More controls:
-    - d - Down half screen
-    - u - Up half screen
+    - d, PgDn - Down half screen
+    - u, PgUp - Up half screen
     - h - Help page
 - Command line flags:
     - -h, --help - Open directly to help page
@@ -49,4 +49,5 @@ After building, the executable will be located at `{installLocation}least/target
 - Number prefixing for movement commands
 
 ## Known Bugs
-- When moving down, the portion of the outgoing top line that extends past the end of the new top line will sometimes be added to the end of the new one.
+- When moving down or up, portions of the top and 2nd liens may be fused together.
+    - Characters from the longer line join after the end of the shorter.
