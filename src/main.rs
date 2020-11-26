@@ -53,17 +53,18 @@ fn search(window: &pancurses::Window) {
 fn main() {
     let args: Vec<String> = env::args().collect();
     let filename: String = args[1].to_owned();
-    let lines: Vec<String> = load_file(&filename);
+    let mut lines: Vec<String> = load_file(&filename).to_owned();
 
     let window: pancurses::Window = initscr();
     window.keypad(true);
     noecho();
 
-    let screen_height: i32 = window.get_max_y();
-    let screen_width: i32 = window.get_max_x();
+    // The max x and y values represent the very edge of the window, so we can't actually access them
+    let screen_height: i32 = window.get_max_y() - 1;
+    let screen_width: i32 = window.get_max_x() - 1;
     let mut content_top: i32 = 0;
-    let content_len = lines.len() as i32;
-    let mut content_bottom: i32 = min(screen_height - 1, content_len); // Make sure to reserve one line for program text
+    let mut content_len = lines.len().to_owned() as i32;
+    let mut content_bottom: i32 = min(screen_height - 1, content_len); // Make sure to reserve an additional line for program text
     let mut write_pos: i32;
 
     for i in 0..content_bottom {
@@ -121,6 +122,50 @@ fn main() {
             Some(Input::Character('u')) | Some(Input::KeyPPage) => {
                 half_screen_up();
             }
+            // o - Open new file
+            Some(Input::Character('o')) => {
+                // Move cursor to command section (Bottom right, minus 20 chars)
+                let input_window_size: i32 = min(20, screen_width);
+                window.mv(screen_height, screen_width - input_window_size);
+                window.refresh();
+                let mut input_str: String = String::new();
+                let mut remaining_chars = input_window_size;
+                loop {
+                    match window.getch() {
+                        Some(Input::Character('\n')) => {
+                            endwin();
+                            lines = load_file(&input_str);
+                            content_len = lines.len() as i32;
+                            content_bottom = min(screen_height - 1, content_len);
+                            window.clear();
+                            for i in 0..content_bottom {
+                                window.printw(&lines[i as usize]);
+                                window.mv(i + 1, 0);
+                            }
+                            window.refresh();
+                            break;
+                        }
+                        // Pancurses doens't detect backspace on all platforms as KeyBackspace, so catch the raw char codes
+                        Some(Input::Character('\u{7f}')) | Some(Input::Character('\u{8f}')) => {
+                            remaining_chars += 1;
+                            input_str.pop();
+                            window.mv(window.get_cur_y(), window.get_cur_x() - 1);
+                            window.delch();
+                            window.refresh();
+                        }
+                        Some(Input::Character(c)) => {
+                            if remaining_chars > 0 {
+                                remaining_chars -= 1;
+                                input_str.push(c);
+                                window.mvaddch(screen_height, screen_width - remaining_chars, c);
+                                window.refresh();
+                            }
+                        }
+                        Some(_input) => (),
+                        None => (),
+                    }
+                }
+            }
             // / - Will be search, for now just starts text input for testing
             Some(Input::Character('/')) => {
                 search(&window);
@@ -132,3 +177,19 @@ fn main() {
     }
     endwin();
 }
+
+/*
+                                Window Sizing & Coordinates
+                 0,0-----------------------------------------------------0,s_w
+                   |                                                     |
+                   |                                                     |
+                   |                                                     |
+                   |                                                     |
+                   |                                                     |
+                   |                                                     |
+                   |                                                     |
+                   |                                                     |
+                   |                                                     |
+                   |                                input:               |
+               s_h,0-----------------------------------------------------s_h,s_w
+*/

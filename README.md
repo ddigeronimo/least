@@ -32,9 +32,13 @@ After building, the executable will be located at `{installLocation}least/target
     - q - Quit
     - j, Down - Down one line 
     - k, Up - Up one line
+    - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand))
 - Basic file loading
 
 ## Future Features
+- Allow for new filenames larger than 20 characters
+    - Wrap text with ... in start
+- React to screen resize
 - More controls:
     - d, PgDn - Down half screen
     - u, PgUp - Up half screen
@@ -47,6 +51,7 @@ After building, the executable will be located at `{installLocation}least/target
     - V2: Add buffer functionality
 - Search functionality
 - Number prefixing for movement commands
+- Handle command line input beyond default use case
 
 ## Known Bugs
 *All clear right now!*
