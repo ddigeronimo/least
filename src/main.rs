@@ -1,4 +1,5 @@
 extern crate pancurses;
+extern crate shellexpand;
 
 use std::{
     cmp::min,
@@ -8,11 +9,13 @@ use std::{
 };
 
 use pancurses::{endwin, initscr, noecho, Input};
+use shellexpand::full;
 
 // Uber-simple file loading
-// Opens the specified file, reads with a BufReader, and returns a Vec of Strings
+// Opens the specified file (after expanding tildes and vars), reads with a BufReader, and returns a Vec of Strings
 fn load_file(filename: &String) -> Vec<String> {
-    let file: File = File::open(filename).expect("Unable to read file");
+    let expanded_filename: String = full(&filename).unwrap().to_string();
+    let file: File = File::open(expanded_filename).expect("Unable to read file");
     let reader = BufReader::new(file);
     reader
         .lines()

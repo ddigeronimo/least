@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 pancurses = "0.16"
+shellexpand = "2.0.0"
