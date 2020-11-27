@@ -27,10 +27,16 @@ fn load_file(filename: &String) -> Vec<String> {
                 .map(|l| l.expect("Failed to read line in file"))
                 .collect()
         } else {
-            vec![String::from(format!("Error: \"{}\" is a directory", filename))]
-        } 
+            vec![String::from(format!(
+                "Error: \"{}\" is a directory",
+                filename
+            ))]
+        }
     } else {
-        vec![String::from(format!("Error: File \"{}\" does not exist", filename))]
+        vec![String::from(format!(
+            "Error: File \"{}\" does not exist",
+            filename
+        ))]
     }
 }
 
