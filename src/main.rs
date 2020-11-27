@@ -67,7 +67,7 @@ fn search(window: &pancurses::Window) {
 fn main() {
     let args: Vec<String> = env::args().collect();
     let filename: String = args[1].to_owned();
-    let mut lines: Vec<String> = load_file(&filename).to_owned();
+    let mut lines: Vec<String> = load_file(&filename);
 
     let window: pancurses::Window = initscr();
     window.keypad(true);
