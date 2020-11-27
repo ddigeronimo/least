@@ -12,15 +12,26 @@ use pancurses::{endwin, initscr, noecho, Input};
 use shellexpand::full;
 
 // Uber-simple file loading
-// Opens the specified file (after expanding tildes and vars), reads with a BufReader, and returns a Vec of Strings
-fn load_file(filename: &String) -> Vec<String> {
+// Opens the specified file (after expanding tildes and vars) and read to a vector with a BufReader
+// Returns a Vec of Strings (errors return an error message to be displayed)
+fn load_file(filename: &String) -> Vec<String>{
     let expanded_filename: String = full(&filename).unwrap().to_string();
-    let file: File = File::open(expanded_filename).expect("Unable to read file");
-    let reader = BufReader::new(file);
-    reader
-        .lines()
-        .map(|l| l.expect("Failed to read line in file"))
-        .collect()
+    let f = File::open(expanded_filename);
+    if f.is_ok() {
+        // If unwrapping the metadata for the file fails, fall back to the dir error
+        let md = metadata(filename).unwrap_or(metadata("/").unwrap());
+        if md.is_file() {
+            let reader = BufReader::new(f.unwrap());
+            reader
+                .lines()
+                .map(|l| l.expect("Failed to read line in file"))
+                .collect()
+        } else {
+            vec![String::from(format!("Error: \"{}\" is a directory", filename))]
+        } 
+    } else {
+        vec![String::from(format!("Error: File \"{}\" does not exist", filename))]
+    }
 }
 
 // TODO: Implement

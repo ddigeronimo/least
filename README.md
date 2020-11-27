@@ -34,6 +34,7 @@ After building, the executable will be located at `{installLocation}least/target
     - k, Up - Up one line
     - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand))
 - Basic file loading
+    - Error handling now added
 
 ## Future Features
 - Allow for new filenames larger than 20 characters
