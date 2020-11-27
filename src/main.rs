@@ -174,10 +174,18 @@ fn main() {
                             window.refresh();
                         }
                         Some(Input::Character(c)) => {
+                            remaining_chars -= 1;
+                            input_str.push(c);
                             if remaining_chars > 0 {
-                                remaining_chars -= 1;
-                                input_str.push(c);
                                 window.mvaddch(screen_height, screen_width - remaining_chars, c);
+                                window.refresh();
+                            } else {
+                                // Replace the last n characters of the input string with "...", where n is abs val of remaining_chars + 3, aka the overflow
+                                // Ex: input_str = /Users/user/folder1/folder2/file (32 chars), new_display_str = ...der1/folder2/file
+                                let mut new_display_str: String = input_str.clone();
+                                new_display_str.replace_range(..remaining_chars.abs() as usize + 3, "...");       
+                                window.mvaddstr(screen_height, screen_width - input_window_size, new_display_str);
+                                window.mv(screen_height, screen_width);
                                 window.refresh();
                             }
                         }

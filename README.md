@@ -35,10 +35,9 @@ After building, the executable will be located at `{installLocation}least/target
     - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand))
 - Basic file loading
     - Error handling now added
+    - Now the in-program file opening functionality allows filenames of practically indefinite length (in practice this is limited by the size of the i32 used to track input string length)
 
 ## Future Features
-- Allow for new filenames larger than 20 characters
-    - Wrap text with ... in start
 - React to screen resize
 - More controls:
     - d, PgDn - Down half screen
