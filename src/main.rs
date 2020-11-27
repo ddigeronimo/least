@@ -4,7 +4,7 @@ extern crate shellexpand;
 use std::{
     cmp::min,
     env,
-    fs::{ File, metadata },
+    fs::{metadata, File},
     io::{BufRead, BufReader},
 };
 
@@ -14,7 +14,7 @@ use shellexpand::full;
 // Uber-simple file loading
 // Opens the specified file (after expanding tildes and vars) and read to a vector with a BufReader
 // Returns a Vec of Strings (errors return an error message to be displayed)
-fn load_file(filename: &String) -> Vec<String>{
+fn load_file(filename: &String) -> Vec<String> {
     let expanded_filename: String = full(&filename).unwrap().to_string();
     let f = File::open(expanded_filename);
     if f.is_ok() {
