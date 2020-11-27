@@ -4,7 +4,7 @@ extern crate shellexpand;
 use std::{
     cmp::min,
     env,
-    fs::File,
+    fs::{ File, metadata },
     io::{BufRead, BufReader},
 };
 
