@@ -15,11 +15,12 @@ use shellexpand::full;
 // Opens the specified file (after expanding tildes and vars) and read to a vector with a BufReader
 // Returns a Vec of Strings (errors return an error message to be displayed)
 fn load_file(filename: &String) -> Vec<String> {
-    let expanded_filename: String = full(&filename).unwrap().to_string();
+    let expanded_filename: String = full(&filename).unwrap().to_string().to_owned();
+    let ef_copy = expanded_filename.clone();
     let f = File::open(expanded_filename);
     if f.is_ok() {
         // If unwrapping the metadata for the file fails, fall back to the dir error
-        let md = metadata(filename).unwrap_or(metadata("/").unwrap());
+        let md = metadata(ef_copy).unwrap_or(metadata("/").unwrap());
         if md.is_file() {
             let reader = BufReader::new(f.unwrap());
             reader

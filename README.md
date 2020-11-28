@@ -32,7 +32,7 @@ After building, the executable will be located at `{installLocation}least/target
     - q - Quit
     - j, Down - Down one line 
     - k, Up - Up one line
-    - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand))
+    - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand)) and supports symlinks
 - Basic file loading
     - Error handling now added
     - Now the in-program file opening functionality allows filenames of practically indefinite length (in practice this is limited by the size of the i32 used to track input string length)
@@ -54,4 +54,4 @@ After building, the executable will be located at `{installLocation}least/target
 - Handle command line input beyond default use case
 
 ## Known Bugs
-*All clear right now!*
+*All clear for now!*
