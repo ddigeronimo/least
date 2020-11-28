@@ -11,6 +11,24 @@ use std::{
 use pancurses::{endwin, initscr, noecho, Input};
 use shellexpand::full;
 
+const HELP_MESSAGE: &str = r#"
+                :::       ::::::::::    :::     ::::::::::::::::::: 
+                :+:       :+:         :+: :+:  :+:    :+:   :+:     
+                +:+       +:+        +:+   +:+ +:+          +:+     
+                +#+       +#++:++#  +#++:++#++:+#++:++#++   +#+     
+                +#+       +#+       +#+     +#+       +#+   +#+     
+                #+#       #+#       #+#     #+##+#    #+#   #+#     
+                #######################     ### ########    ###     
+
+                Usage: least [-h | --help] filename
+
+                Controls:
+                    - q - Quit
+                    - j, Down - Down one line 
+                    - k, Up - Up one line
+                    - o - Open a new file
+"#;
+
 // Uber-simple file loading
 // Opens the specified file (after expanding tildes and vars) and read to a vector with a BufReader
 // Returns a Vec of Strings (errors return an error message to be displayed)
@@ -42,9 +60,6 @@ fn load_file(filename: &String) -> Vec<String> {
 }
 
 // TODO: Implement
-fn help_page() {}
-
-// TODO: Implement
 fn half_screen_down() {}
 
 // TODO: Implement
@@ -73,6 +88,15 @@ fn search(window: &pancurses::Window) {
 // Main program logic
 fn main() {
     let args: Vec<String> = env::args().collect();
+    if args.len() < 2 || (args.len() == 3 && args[1].to_owned() != "-w") {
+        println!("Usage: least [-h | --help] filename");
+        return;
+    }
+    if args[1].to_owned() == "-h" || args[1].to_owned() == "--help" {
+        println!("{}", HELP_MESSAGE);
+        return;
+    }
+
     let filename: String = args[1].to_owned();
     let mut lines: Vec<String> = load_file(&filename);
 
@@ -103,7 +127,16 @@ fn main() {
             }
             // h - Open help page
             Some(Input::Character('h')) => {
-                help_page();
+                window.clear();
+                lines = vec![String::from(HELP_MESSAGE)];
+                content_len = lines.len() as i32;
+                content_bottom = min(screen_height - 1, content_len);
+                window.clear();
+                for i in 0..content_bottom {
+                    window.printw(&lines[i as usize]);
+                    window.mv(i + 1, 0);
+                }
+                window.refresh();
             }
             // j - Move down one line
             Some(Input::Character('j')) | Some(Input::KeyDown) => {

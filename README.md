@@ -30,9 +30,12 @@ After building, the executable will be located at `{installLocation}least/target
 ## Implemented Features
 - Controls:
     - q - Quit
+    - h - Open help page
     - j, Down - Down one line 
     - k, Up - Up one line
     - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand)) and supports symlinks
+- Command line flags:
+    - -h, --help - Prints help page to command line
 - Basic file loading
     - Error handling now added
     - Now the in-program file opening functionality allows filenames of practically indefinite length (in practice this is limited by the size of the i32 used to track input string length)
@@ -42,16 +45,12 @@ After building, the executable will be located at `{installLocation}least/target
 - More controls:
     - d, PgDn - Down half screen
     - u, PgUp - Up half screen
-    - h - Help page
-- Command line flags:
-    - -h, --help - Open directly to help page
 - Jumping
 - Optimized file loading
     - V1: Load lines as needed
     - V2: Add buffer functionality
 - Search functionality
 - Number prefixing for movement commands
-- Handle command line input beyond default use case
 
 ## Known Bugs
 *All clear for now!*
