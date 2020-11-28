@@ -154,7 +154,6 @@ fn main() {
                 loop {
                     match window.getch() {
                         Some(Input::Character('\n')) => {
-                            endwin();
                             lines = load_file(&input_str);
                             content_len = lines.len() as i32;
                             content_bottom = min(screen_height - 1, content_len);
