@@ -15,7 +15,7 @@ use shellexpand::full;
 // Opens the specified file (after expanding tildes and vars) and read to a vector with a BufReader
 // Returns a Vec of Strings (errors return an error message to be displayed)
 fn load_file(filename: &String) -> Vec<String> {
-    let expanded_filename: String = full(&filename).unwrap().to_string().to_owned();
+    let expanded_filename: String = full(&filename).unwrap().to_string();
     let ef_copy = expanded_filename.clone();
     let f = File::open(expanded_filename);
     if f.is_ok() {
