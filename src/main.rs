@@ -20,11 +20,13 @@ const HELP_MESSAGE: &str = r#"
         #+#       #+#       #+#     #+##+#    #+#   #+#     
         #######################     ### ########    ###     
 
+                      © 2020 Dylan DiGeronimo
+
                 Usage: least [-h | --help] filename
 
-                Controls:
-                    - q - Quit
-                    - j, Down - Down one line 
+                   Controls:
+                       - q - Quit
+                       - j, Down - Down one line 
                     - k, Up - Up one line
                     - o - Open a new file
 "#;
