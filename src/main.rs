@@ -228,26 +228,6 @@ impl WindowState {
     }
 }
 
-// Creates a secondary loop to collect and display search input
-// Takes in a pointer to the current pancurses Window
-// TODO: Convert from temporary function to actual search
-fn search(window: &pancurses::Window) {
-    loop {
-        match window.getch() {
-            Some(Input::Character('/')) => {
-                break;
-            }
-            Some(Input::Character(c)) => {
-                window.addch(c);
-            }
-            Some(input) => {
-                window.addstr(&format!("{:?}", input));
-            }
-            None => (),
-        }
-    }
-}
-
 // Main program logic
 fn main() {
     let args: Vec<String> = env::args().collect();
