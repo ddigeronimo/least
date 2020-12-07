@@ -101,7 +101,7 @@ impl WindowState {
     }
 
     // Jump to a given line, as long as it's within the bounds of the current window
-    // Effectively replaces the logic I had separated out into seperate code blocks for down one line, up one line, etc
+    // Effectively replaces the logic I had separated out into separate code blocks for down one line, up one line, etc
     pub fn jump_to_line(self, n: &i32) -> WindowState {
         if *n >= 0 && *n <= self.content_len {
             self.window.clear();
@@ -231,7 +231,7 @@ impl WindowState {
 // Main program logic
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() < 2 || (args.len() == 3 && args[1].to_owned() != "-w") {
+    if args.len() != 2 {
         println!("Usage: least [-h | --help] filename");
         return;
     }
