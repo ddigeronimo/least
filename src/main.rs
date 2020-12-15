@@ -94,7 +94,7 @@ struct WindowState {
     content_top: i32,
     content_bottom: i32,
     content_len: i32,
-    search_results: Vec<(i32, i32)>
+    search_results: Vec<(i32, i32)>,
 }
 
 impl WindowState {
@@ -322,7 +322,7 @@ impl WindowState {
     // Move the screen to the line of the next search result, and rotate the list forward
     pub fn jump_to_next_search_result(self) -> WindowState {
         if self.search_results.len() != 0 {
-            let jump_line: i32 = self.search_results[0].0; 
+            let jump_line: i32 = self.search_results[0].0;
             let mut new_state: WindowState = self.jump_to_line(&jump_line);
             new_state.search_results.rotate_left(1);
             new_state
@@ -334,7 +334,7 @@ impl WindowState {
     // Move the screen to the line of the last search result, and rotate the list backward
     pub fn jump_to_last_search_result(self) -> WindowState {
         if self.search_results.len() != 0 {
-            let jump_line: i32 = self.search_results[self.search_results.len() - 2].0; 
+            let jump_line: i32 = self.search_results[self.search_results.len() - 2].0;
             let mut new_state: WindowState = self.jump_to_line(&jump_line);
             new_state.search_results.rotate_right(1);
             new_state
