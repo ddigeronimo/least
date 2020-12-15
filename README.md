@@ -37,6 +37,10 @@ After building, the executable will be located at `{installLocation}least/target
     - u, PgUp - Up half a screen
     - g - Jump to top of file
     - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand)) and supports symlinks
+    - / - Search
+    - ? - Reverse search
+    - n - Jump to next search result
+    - N - Jump to previous search result
 - Command line flags:
     - -h, --help - Prints help page to command line
 - Basic file loading
@@ -44,12 +48,12 @@ After building, the executable will be located at `{installLocation}least/target
     - Now the in-program file opening functionality allows filenames of practically indefinite length (in practice this is limited by the size of the i32 used to track input string length)
 
 ## Potential Future Features
+- Search highlighting
 - React to screen resize
 - Jump to specific line
 - Optimized file loading (if needed for performance reasons)
     - V1: Load lines as needed
     - V2: Add buffer functionality
-- Search functionality
 - Number prefixing for movement commands
 
 ## Known Bugs

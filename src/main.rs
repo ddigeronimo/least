@@ -64,6 +64,25 @@ fn load_file(filename: &String) -> Vec<String> {
     }
 }
 
+// Given a vector of strings crawl over it and search for any occurences
+// Returns a vector of tuples corresponding to the (line number, start character number)
+fn search_scraper(lines: &Vec<String>, search_term: &String) -> Vec<(i32, i32)> {
+    let mut results: Vec<(i32, i32)> = Vec::new();
+    let mut line_number: i32 = 0;
+    for line in lines {
+        if line.contains(search_term) {
+            // Get a vec of tuples of (starting index of substring, substring)
+            let line_result_tuples: Vec<(usize, &str)> = line.match_indices(search_term).collect();
+            // Filter that vec into just the starting indices and put them into a tuple with the line number
+            for t in line_result_tuples {
+                results.append(&mut vec![(line_number, t.0 as i32)]);
+            }
+        }
+        line_number += 1;
+    }
+    results
+}
+
 // Struct that holds properties of the current window for easy reference
 // Originally, I was using variables scoped to the main method to track these values,
 // but that lead to lots of borrowing issues + the inability to move logic out of the main method
@@ -75,6 +94,7 @@ struct WindowState {
     content_top: i32,
     content_bottom: i32,
     content_len: i32,
+    search_results: Vec<(i32, i32)>
 }
 
 impl WindowState {
@@ -89,6 +109,7 @@ impl WindowState {
         let content_len = lines.len() as i32;
         let content_top = 0;
         let content_bottom: i32 = min(screen_height - 1, content_len); // Make sure to reserve an additional line for program text
+        let search_results: Vec<(i32, i32)> = Vec::new();
         return WindowState {
             window: window,
             lines,
@@ -97,6 +118,7 @@ impl WindowState {
             content_top: content_top,
             content_bottom: content_bottom,
             content_len: content_len,
+            search_results: search_results,
         };
     }
 
@@ -122,6 +144,7 @@ impl WindowState {
                 content_top: new_content_top,
                 content_bottom: new_content_bottom,
                 content_len: self.content_len,
+                search_results: self.search_results,
             }
         } else {
             self
@@ -149,6 +172,7 @@ impl WindowState {
             content_top: 0,
             content_bottom: new_content_bottom,
             content_len: help_len,
+            search_results: self.search_results,
         }
     }
 
@@ -165,6 +189,7 @@ impl WindowState {
         let new_lines: Vec<String>;
         let new_content_len: i32;
         let new_content_bottom: i32;
+        let new_search_results: Vec<(i32, i32)> = Vec::new();
         loop {
             match self.window.getch() {
                 Some(Input::Character('\n')) => {
@@ -224,9 +249,99 @@ impl WindowState {
             content_top: 0,
             content_bottom: new_content_bottom,
             content_len: new_content_len,
+            search_results: new_search_results,
         }
     }
-}
+
+    // Take user input to feed into the search scraper
+    // If reverse is true, reverses the search_results
+    pub fn search(self, reverse: bool) -> WindowState {
+        // Move cursor to command section (Bottom right, minus 20 chars)
+        let input_window_size: i32 = min(20, self.screen_width);
+        self.window
+            .mv(self.screen_height, self.screen_width - input_window_size);
+        self.window.refresh();
+        let mut input_str: String = String::new();
+        let mut remaining_chars = input_window_size;
+        let mut search_results: Vec<(i32, i32)>;
+        let mut new_state: WindowState;
+        loop {
+            match self.window.getch() {
+                Some(Input::Character('\n')) => {
+                    search_results = search_scraper(&self.lines, &input_str);
+                    if reverse {
+                        search_results.reverse();
+                    }
+                    new_state = self;
+                    new_state.search_results = search_results;
+                    new_state = new_state.jump_to_next_search_result();
+                    break;
+                }
+                // Pancurses doens't detect backspace on all platforms as KeyBackspace, so catch the raw char codes
+                Some(Input::Character('\u{7f}')) | Some(Input::Character('\u{8f}')) => {
+                    remaining_chars += 1;
+                    input_str.pop();
+                    self.window
+                        .mv(self.window.get_cur_y(), self.window.get_cur_x() - 1);
+                    self.window.delch();
+                    self.window.refresh();
+                }
+                Some(Input::Character(c)) => {
+                    remaining_chars -= 1;
+                    input_str.push(c);
+                    if remaining_chars > 0 {
+                        self.window.mvaddch(
+                            self.screen_height,
+                            self.screen_width - remaining_chars,
+                            c,
+                        );
+                        self.window.refresh();
+                    } else {
+                        // Replace the last n characters of the input string with "...", where n is abs val of remaining_chars + 3, aka the overflow
+                        // Ex: input_str = /Users/user/folder1/folder2/file (32 chars), new_display_str = ...der1/folder2/file
+                        let mut new_display_str: String = input_str.clone();
+                        new_display_str.replace_range(..remaining_chars.abs() as usize + 3, "...");
+                        self.window.mvaddstr(
+                            self.screen_height,
+                            self.screen_width - input_window_size,
+                            new_display_str,
+                        );
+                        self.window.mv(self.screen_height, self.screen_width);
+                        self.window.refresh();
+                    }
+                }
+                Some(input) => {
+                    self.window.addstr(&format!("{:?}", input));
+                }
+                None => (),
+            }
+        }
+        new_state
+    }
+
+    // Move the screen to the line of the next search result, and rotate the list forward
+    pub fn jump_to_next_search_result(self) -> WindowState {
+        if self.search_results.len() != 0 {
+            let jump_line: i32 = self.search_results[0].0; 
+            let mut new_state: WindowState = self.jump_to_line(&jump_line);
+            new_state.search_results.rotate_left(1);
+            new_state
+        } else {
+            self
+        }
+    }
+
+    // Move the screen to the line of the last search result, and rotate the list backward
+    pub fn jump_to_last_search_result(self) -> WindowState {
+        if self.search_results.len() != 0 {
+            let jump_line: i32 = self.search_results[self.search_results.len() - 2].0; 
+            let mut new_state: WindowState = self.jump_to_line(&jump_line);
+            new_state.search_results.rotate_right(1);
+            new_state
+        } else {
+            self
+        }
+    }
 
 // Main program logic
 fn main() {
@@ -290,9 +405,21 @@ fn main() {
             Some(Input::Character('o')) => {
                 state = state.open_file();
             }
-            // / - Will be search
+            // / - Search
             Some(Input::Character('/')) => {
-                // TODO: Implement
+                state = state.search(false);
+            }
+            // ? - Reverse search
+            Some(Input::Character('?')) => {
+                state = state.search(true);
+            }
+            // n - Jump to next search result
+            Some(Input::Character('n')) => {
+                state = state.jump_to_next_search_result();
+            }
+            // N - Jump to last search result
+            Some(Input::Character('N')) => {
+                state = state.jump_to_last_search_result();
             }
             // Handle resize
             Some(Input::KeyResize) => {
