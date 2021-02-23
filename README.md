@@ -36,7 +36,7 @@ After building, the executable will be located at `{installLocation}least/target
     - d, PgDn - Down half a screen
     - u, PgUp - Up half a screen
     - g - Jump to top of file
-    - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand)) and supports symlinks
+    - o - Open a new file (expands tildes and environment variables with [shellexpand](https://crates.io/crates/shellexpand) and supports symlinks)
     - / - Search
     - ? - Reverse search
     - n - Jump to next search result
