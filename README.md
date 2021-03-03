@@ -1,5 +1,17 @@
 # least
 
+
+        :::       ::::::::::    :::     :::::::::::::::::::
+        :+:       :+:         :+: :+:  :+:    :+:   :+:
+        +:+       +:+        +:+   +:+ +:+          +:+
+        +#+       +#++:++#  +#++:++#++:+#++:++#++   +#+
+        +#+       +#+       +#+     +#+       +#+   +#+
+        #+#       #+#       #+#     #+##+#    #+#   #+#
+        #######################     ### ########    ###
+
+                      © 2020 Dylan DiGeronimo
+
+
 Least is a minimal, less-esque paging application written in Rust, using [pancurses](https://crates.io/crates/pancurses).
 
 Its intention is not to outperform less, either in terms of speed or features, although that would be a nice eventual goal. Instead, I'm creating it as a means of getting to learn an interesting technology that I don't get to use in my everyday work. As such, there'll probably be a good amount of code that's amateur-ish, but I'm going to try my best to follow Rust conventions as I learn them.
