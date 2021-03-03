@@ -60,6 +60,10 @@ After building, the executable will be located at `{installLocation}least/target
     - Now the in-program file opening functionality allows filenames of practically indefinite length (in practice this is limited by the size of the i32 used to track input string length)
 
 ## Potential Future Features
+- Search UX improvements:
+    - "No results found" message
+    - Prefix search term with "/"
+    - Clear previous search input
 - Search highlighting
 - React to screen resize
 - Jump to specific line
@@ -69,4 +73,4 @@ After building, the executable will be located at `{installLocation}least/target
 - Number prefixing for movement commands
 
 ## Known Bugs
-*All clear for now!*
+Pressing N for previous search result with only one result causes a panic
