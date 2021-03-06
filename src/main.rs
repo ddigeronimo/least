@@ -373,7 +373,6 @@ impl WindowState {
         }
         self
     }
-
 }
 
 // Main program logic
@@ -458,11 +457,6 @@ fn main() {
             // N - Jump to last search result
             Some(Input::Character('N')) => {
                 state = state.jump_to_last_search_result();
-            }
-            // Handle resize
-            Some(Input::KeyResize) => {
-                // https://github.com/ihalila/pancurses/pull/65
-                // TODO: Implement
             }
             // Any other keys - do nothing
             Some(_input) => (),
