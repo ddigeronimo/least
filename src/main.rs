@@ -65,17 +65,18 @@ fn load_file(filename: &String) -> Vec<String> {
 }
 
 // Given a vector of strings crawl over it and search for any occurences
-// Returns a vector of tuples corresponding to the (line number, start character number)
-fn search_scraper(lines: &Vec<String>, search_term: &String) -> Vec<(i32, i32)> {
-    let mut results: Vec<(i32, i32)> = Vec::new();
+// Returns a vector of tuples corresponding to the (line number, start character number, end character number)
+fn search_scraper(lines: &Vec<String>, search_term: &String) -> Vec<(i32, i32, i32)> {
+    let mut results: Vec<(i32, i32, i32)> = Vec::new();
     let mut line_number: i32 = 0;
     for line in lines {
         if line.contains(search_term) {
             // Get a vec of tuples of (starting index of substring, substring)
             let line_result_tuples: Vec<(usize, &str)> = line.match_indices(search_term).collect();
-            // Filter that vec into just the starting indices and put them into a tuple with the line number
+            // Filter that vec into just the starting indices and put them into a tuple with the line number and the ending index of the substring
             for t in line_result_tuples {
-                results.append(&mut vec![(line_number, t.0 as i32)]);
+                let end_index: i32 = (t.0 + search_term.len()) as i32;
+                results.append(&mut vec![(line_number, t.0 as i32, end_index)]);
             }
         }
         line_number += 1;
@@ -94,7 +95,7 @@ struct WindowState {
     content_top: i32,
     content_bottom: i32,
     content_len: i32,
-    search_results: Vec<(i32, i32)>,
+    search_results: Vec<(i32, i32, i32)>
 }
 
 impl WindowState {
@@ -109,7 +110,7 @@ impl WindowState {
         let content_len = lines.len() as i32;
         let content_top = 0;
         let content_bottom: i32 = min(screen_height - 1, content_len); // Make sure to reserve an additional line for program text
-        let search_results: Vec<(i32, i32)> = Vec::new();
+        let search_results: Vec<(i32, i32, i32)> = Vec::new();
         return WindowState {
             window: window,
             lines,
@@ -189,7 +190,7 @@ impl WindowState {
         let new_lines: Vec<String>;
         let new_content_len: i32;
         let new_content_bottom: i32;
-        let new_search_results: Vec<(i32, i32)> = Vec::new();
+        let new_search_results: Vec<(i32, i32, i32)> = Vec::new();
         loop {
             match self.window.getch() {
                 Some(Input::Character('\n')) => {
@@ -263,7 +264,7 @@ impl WindowState {
         self.window.refresh();
         let mut input_str: String = String::new();
         let mut remaining_chars = input_window_size;
-        let mut search_results: Vec<(i32, i32)>;
+        let mut search_results: Vec<(i32, i32, i32)>;
         let mut new_state: WindowState;
         loop {
             match self.window.getch() {
@@ -325,7 +326,7 @@ impl WindowState {
             let jump_line: i32 = self.search_results[0].0;
             let mut new_state: WindowState = self.jump_to_line(&jump_line);
             new_state.search_results.rotate_left(1);
-            new_state
+            new_state.highlight_search_results()
         } else {
             self
         }
@@ -334,14 +335,46 @@ impl WindowState {
     // Move the screen to the line of the last search result, and rotate the list backward
     pub fn jump_to_last_search_result(self) -> WindowState {
         if self.search_results.len() != 0 {
-            let jump_line: i32 = self.search_results[self.search_results.len() - 2].0;
-            let mut new_state: WindowState = self.jump_to_line(&jump_line);
-            new_state.search_results.rotate_right(1);
-            new_state
+            let jump_line: i32;
+            if self.search_results.len() > 1 {
+                // self.search_results.len() - 2 corresponds to the previous search result before rotation of search_results
+                jump_line = self.search_results[self.search_results.len() - 2].0;
+                let mut new_state: WindowState = self.jump_to_line(&jump_line);
+                new_state.search_results.rotate_right(1);
+                new_state.highlight_search_results()
+            } else {
+                self
+            }
         } else {
             self
         }
     }
+
+    pub fn highlight_search_results(self) -> WindowState {
+        for result in &self.search_results {
+            // If a search result's line is currently within the display, highlight it
+            if result.0 >= self.content_top && result.0 <= self.content_bottom {
+                // Get the on-screen line number of the search result
+                let line_offset: i32 = result.0 - self.content_top;
+                self.window.mv(line_offset, 0);
+                // Split the line the result is on into 3 chunks: pre-search result, search result, post-search result
+                let line: String = self.lines[result.0 as usize].clone();
+                let pre_chunk: String = line.chars().take(result.1 as usize).collect();
+                let result_string: String = line.chars().skip(result.1 as usize).take((result.2 - result.1) as usize).collect();
+                let post_chunk: String = line.chars().skip(result.2 as usize).take((line.len() + 1) - result.2 as usize).collect();
+                self.window.addstr(pre_chunk);
+                self.window.attrset(pancurses::COLOR_PAIR(2));
+                self.window.addstr(result_string);
+                self.window.attrset(pancurses::COLOR_PAIR(1));
+                self.window.addstr(post_chunk);
+                self.window.addch('\n');
+            }
+            self.window.refresh();
+        }
+        self
+    }
+
+}
 
 // Main program logic
 fn main() {
@@ -358,6 +391,11 @@ fn main() {
     let filename: String = args[1].to_owned();
     let lines: Vec<String> = load_file(&filename);
     let mut state: WindowState = WindowState::new(lines);
+
+    // Setup colors
+    pancurses::start_color();
+    pancurses::init_pair(1, pancurses::COLOR_WHITE, pancurses::COLOR_BLACK);
+    pancurses::init_pair(2, pancurses::COLOR_BLACK, pancurses::COLOR_GREEN);
 
     // jump_to_line() can also be used for the inital draw
     let init_pos: i32 = 0;

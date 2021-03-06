@@ -12,11 +12,11 @@
                       © 2020 Dylan DiGeronimo
 
 
-Least is a minimal, less-esque paging application written in Rust, using [pancurses](https://crates.io/crates/pancurses).
+Least is a minimal, less-inspired paging application written in Rust, using [pancurses](https://crates.io/crates/pancurses).
 
 Its intention is not to outperform less, either in terms of speed or features, although that would be a nice eventual goal. Instead, I'm creating it as a means of getting to learn an interesting technology that I don't get to use in my everyday work. As such, there'll probably be a good amount of code that's amateur-ish, but I'm going to try my best to follow Rust conventions as I learn them.
 
-The functionality is also not intended to be a total clone of less, with the controls being geared toward my personal preferences. I'm also making a point of not looking at the less source code while I build this - it isn't a direct translation of less to Rust, but a reinterpretation that happens to be written in a different language. 
+The functionality is also not intended to be a total clone of less, with the controls being geared toward my personal preferences. I'm also making a point of not looking at the less source code while I build this. Least isn't a direct translation of less from C to Rust - it's a reinterpretation that happens to be written in a different language. 
 
 least is licensed under the MIT license, so feel free to download it, fork it, modify it, use it, love it, hate it, etc. You do you.
 
@@ -58,13 +58,13 @@ After building, the executable will be located at `{installLocation}least/target
 - Basic file loading
     - Error handling now added
     - Now the in-program file opening functionality allows filenames of practically indefinite length (in practice this is limited by the size of the i32 used to track input string length)
+- Search highlighting
 
 ## Potential Future Features
 - Search UX improvements:
     - "No results found" message
     - Prefix search term with "/"
     - Clear previous search input
-- Search highlighting
 - React to screen resize
 - Jump to specific line
 - Optimized file loading (if needed for performance reasons)
@@ -73,4 +73,4 @@ After building, the executable will be located at `{installLocation}least/target
 - Number prefixing for movement commands
 
 ## Known Bugs
-Pressing N for previous search result with only one result causes a panic
+*All clear for now!*
