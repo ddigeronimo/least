@@ -65,7 +65,6 @@ After building, the executable will be located at `{installLocation}least/target
     - "No results found" message
     - Prefix search term with "/"
     - Clear previous search input
-- React to screen resize
 - Jump to specific line
 - Optimized file loading (if needed for performance reasons)
     - V1: Load lines as needed
