@@ -61,6 +61,7 @@ After building, the executable will be located at `{installLocation}least/target
 - Search highlighting
 
 ## Potential Future Features
+*None of these are guarantees, but you might see them in the future*
 - Search UX improvements:
     - "No results found" message
     - Prefix search term with "/"
@@ -70,6 +71,8 @@ After building, the executable will be located at `{installLocation}least/target
     - V1: Load lines as needed
     - V2: Add buffer functionality
 - Number prefixing for movement commands
+- Automatic release building via Github Actions
+- Improved project structure
 
 ## Known Bugs
 *All clear for now!*
