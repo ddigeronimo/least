@@ -1,6 +1,8 @@
 extern crate pancurses;
 extern crate shellexpand;
 
+mod help;
+
 use std::{
     cmp::{max, min},
     env,
@@ -11,33 +13,7 @@ use std::{
 use pancurses::{endwin, initscr, noecho, Input, Window};
 use shellexpand::full;
 
-const HELP_MESSAGE: &str = r#"
-        :::       ::::::::::    :::     ::::::::::::::::::: 
-        :+:       :+:         :+: :+:  :+:    :+:   :+:     
-        +:+       +:+        +:+   +:+ +:+          +:+     
-        +#+       +#++:++#  +#++:++#++:+#++:++#++   +#+     
-        +#+       +#+       +#+     +#+       +#+   +#+     
-        #+#       #+#       #+#     #+##+#    #+#   #+#     
-        #######################     ### ########    ###     
-
-                      © 2020 Dylan DiGeronimo
-
-                Usage: least [-h, --help | filename]
-
-                   Controls:
-                       - q - Quit
-                       - j, Down - Down one line
-                       - k, Up - Up one line
-                       - d, PgDn - Down half a screen
-                       - u, PgUp - Up half a screen
-                       - g - Jump to top of file
-                       - / - Forward search
-                       - ? - Backward search
-                       - n - Next search result
-                       - N - Last search result
-                       - o - Open a new file
-                       - h - Open help screen
-"#;
+use crate::help::HELP_MESSAGE;
 
 // Opens the specified file (expands tildes and vars) and reads to a vector with a BufReader
 // Returns a Vec of Strings (errors return an error message to be displayed)
