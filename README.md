@@ -10,7 +10,8 @@
         #######################     ### ########    ###
 
                       © 2020 Dylan DiGeronimo
-
+                      
+[![MIT License](https://img.shields.io/github/license/ddigeronimo/least)](https://github.com/ddigeronimo/least/blob/master/LICENSE)
 
 Least is a minimal, less-inspired paging application written in Rust, using [pancurses](https://crates.io/crates/pancurses).
 
